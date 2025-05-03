@@ -3,14 +3,22 @@
 @section('content-title', 'Category')
 @section('content')
 
+@session('success')
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endsession
+
 <div class="row">
     <div class="col-md-8">
-        <a class="btn btn-success" href="">Add</a>
+        <a class="btn btn-success" href="{{ url('/category/create') }}">Add</a>
         <table class="table">
             <tr>
-                <th>No</th>
                 <th>ID</th>
                 <th>Name</th>
+                <th>Action</th>
+                
+
             </tr>
             <tr>
             @forelse ($categories as $category)
@@ -18,8 +26,12 @@
                 <td>{{$category->name}}</td>
                 
                 <td>
-                    <a class="btn btn-warning" href="">edit</a>
-                    <a class="btn btn-danger" href="">delete</a>
+                    <a class="btn btn-warning" href="{{ route('category.edit', $category->id) }}">edit</a>
+                    <form action="{{ route('category.destroy', $category->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin hapus?')">Delete</button>
+                      </form>
                 </td>
             </tr>
             @empty

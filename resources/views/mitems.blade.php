@@ -3,9 +3,16 @@
 @section('content-title', 'Items')
 @section('content')
 
+@session('success')
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endsession
+
+
 <div class="row">
     <div class="col-md-8">
-        <a class="btn btn-success" href="">Add</a>
+        <a class="btn btn-success" href="{{ route('items.create') }}">Add</a>
         <table class="table">
             <tr>
                 <th>No</th>
@@ -13,6 +20,7 @@
                 <th>Name</th>
                 <th>Price</th>
                 <th>Stock</th>
+                <th>Action</th>
             </tr>
             <tr>
             @forelse ($items as $item)
@@ -23,8 +31,12 @@
                 <td>{{$item->stock}}</td>
                 
                 <td>
-                    <a class="btn btn-warning" href="">edit</a>
-                    <a class="btn btn-danger" href="">delete</a>
+                    <a class="btn btn-warning" href="{{ route('items.edit', $item->id) }}">edit</a>
+                    <form action="{{ route('items.destroy', $item->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin hapus?')">Delete</button>
+                      </form>
                 </td>
             </tr>
             @empty

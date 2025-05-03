@@ -5,7 +5,7 @@
 
 <div class="row">
     <div class="col-md-8">
-        <a class="btn btn-success" href="">Add</a>
+        <a class="btn btn-success" href="{{ url('/transaction/create') }}">Add</a>
         <table class="table">
             <tr>
                 <th>No</th>
@@ -14,6 +14,7 @@
                 <th>Date</th>
                 <th>Total</th>
                 <th>Pay Total</th>
+                <th>Action</th>
             </tr>
             <tr>
             @forelse ($transactions as $transaction)
@@ -26,7 +27,11 @@
                 
                 <td>
                     <a class="btn btn-warning" href="">edit</a>
-                    <a class="btn btn-danger" href="">delete</a>
+                    <form action="{{ route('transaction.destroy', $transaction->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin hapus?')">Delete</button>
+                      </form>
                 </td>
             </tr>
             @empty

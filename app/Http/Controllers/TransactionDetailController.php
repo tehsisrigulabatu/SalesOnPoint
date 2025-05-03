@@ -59,8 +59,9 @@ class TransactionDetailController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TransactionDetail $transactionDetail)
+    public function destroy(TransactionDetail $historytransaction)
     {
-        //
+        $historytransaction->delete();
+        return redirect()->route('historytransaction.index')->with('success', 'Item deleted!');
     }
 }

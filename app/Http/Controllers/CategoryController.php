@@ -13,6 +13,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
+        
         return view('mcategory', compact('categories'));
     }
 
@@ -21,7 +22,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('create', ['type' => 'category']);
     }
 
     /**
@@ -29,7 +30,18 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validasi dulu
+        $request->validate([
+            'name' => 'required|string|min:10',
+        ]);
+
+        // Simpan ke database
+        Category::create([
+            'name' => $request->name,
+        ]);
+
+        // Redirect balik ke index + kasih pesan sukses
+        return redirect('/category')->with('success', 'Category Added Successfully!');
     }
 
     /**
@@ -43,9 +55,13 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Category $category)
+    public function edit($id)
     {
-        //
+        //get product by ID
+        $category = Category::findOrFail($id);
+
+        //render view with product
+        return view('edit', compact('category'));
     }
 
     /**
@@ -53,7 +69,18 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+
+        // Validasi input
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        // Update category
+        $category->name = $request->input('name');
+        $category->save();
+
+        // Redirect atau kembalikan response
+        return redirect()->route('category.index')->with('success', 'Category updated successfully');
     }
 
     /**
@@ -61,6 +88,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return redirect()->route('category.index')->with('success', 'Item deleted!');
     }
 }

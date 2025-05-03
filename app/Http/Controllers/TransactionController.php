@@ -21,7 +21,7 @@ class TransactionController extends Controller
      */
     public function create()
     {
-        //
+        return view('create', ['type' => 'transaction']);
     }
 
     /**
@@ -29,7 +29,24 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         // Validasi dulu
+         $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'date' => 'required|date',
+            'total' => 'required|numeric',
+            'pay_total' => 'required|integer'
+        ]);
+
+        // Simpan ke database
+        Transaction::create([
+            'date' => $request->date,
+            'total' => $request->total,
+            'pay_total' => $request->pay_total,
+            'user_id' => $request->user_id
+        ]);
+
+        // Redirect balik ke index + kasih pesan sukses
+        return redirect('/transaction')->with('success', 'Category berhasil ditambahkan!');
     }
 
     /**
@@ -61,6 +78,7 @@ class TransactionController extends Controller
      */
     public function destroy(Transaction $transaction)
     {
-        //
+        $transaction->delete();
+        return redirect()->route('transaction.index')->with('success', 'Item deleted!');
     }
 }

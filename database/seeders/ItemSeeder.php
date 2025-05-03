@@ -18,7 +18,7 @@ class ItemSeeder extends Seeder
             DB::table('items')->insert([
                 //'id' => $faker->numberBetween(1,5),
                 'category_id' => $faker->numberBetween(1,5),
-                //'name' => $faker->name,
+                'name' => $faker->name,
                 'price' => $faker->numberBetween(50000, 100000),
                 'stock' => $faker->numberBetween(1,20)
             ]);

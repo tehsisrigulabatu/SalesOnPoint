@@ -5,7 +5,7 @@
 
 <div class="row">
     <div class="col-md-8">
-        <a class="btn btn-success" href="">Add</a>
+        <a class="btn btn-success" href="{{ url('/historytransaction/create') }}">Add</a>
         <table class="table">
             <tr>
                 <th>No</th>
@@ -14,6 +14,7 @@
                 <th>Item ID</th>
                 <th>Quantity</th>
                 <th>Subtotal</th>
+                <th>Action</th>
             </tr>
             <tr>
             @forelse ($transactionDetails as $transhistory)
@@ -26,7 +27,11 @@
                 
                 <td>
                     <a class="btn btn-warning" href="">edit</a>
-                    <a class="btn btn-danger" href="">delete</a>
+                    <form action="{{ route('historytransaction.destroy', $transhistory->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin hapus?')">Delete</button>
+                      </form>
                 </td>
             </tr>
             @empty
